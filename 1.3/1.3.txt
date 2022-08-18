@@ -1,0 +1,63 @@
+Enligt Android developers riktlinjer, finns det flera sätt att publicera en app för nedladdning. 
+Antingen genom google play/app store eller direkt genom hosting av apkn som kan laddas ner vid begäran.
+
+innan distributionen av appen bör flera andra element föerbereddas: 
+
+	app ikon vars attribut måste sättas i manifest xml filen
+	
+	God namngivning av paket kan lösas genom direkt byte av namn i android studios androidManifest.xml fil
+
+	rensning av logging och debugging genom att sätta android:debuggable till false, eller ta bort attributen. Detsamma med vanliga log funktioner i varje fil som tillhör projektet
+
+	Rensning av katalogerna genom att säkerställa att vaje katalog endast innehåller filer som tillhör till kontexten.
+
+	redovisning och uppdatering av gradle inställningar
+	
+	klargöra vilka persmissioner som applikationen har tillgång till
+
+	ytterligare definera android:icon och android:label och specifiera deras värden i manifest filen. Detsamma med versionCode och versionName i gradle filen.
+	Eventuellt lägga till egenskaper som kommer att behöva sättas baserad på distribueringsplatform
+
+	Vid behov och planering, lägga till layouts för olika resolutioner i andra enheter.
+
+	Vid eventuell kommunicering med externa servrar eller APIer säkerställa att URLs leder och svarar tillbaka utan problem. 
+
+Efter alla steg innan kan man börja bygga en körbar APK
+	
+	För det behöver man skaffa en kryptografisk nyckel som kommer att fungera som privat nyckeln för ägaren av programmet.
+	
+	säkerställa att applikationens servar har en godtyckligt säkerhet vid hantering av transaktioner och överföring av fakturor.
+
+	Testa release versionen av applikationen under verkliga omständigheter och enheter innan själva distribueringen.
+
+För generering av en kryptografisk nyckel kan man använda sig av android studio för att automatisera processen, och därmed tillgängliggöra relesea i app butiker
+	
+	Om ingen tidigare nyckel har blivit angiven, så kan man gå till Build : Generate signed bundle or apk 
+		
+		inom fönstret kommer man behöva mata in information i respektive fält samt lössnord för key och keystore, personlig information och filväg där nyckeln kommer sparas.
+
+		efter inmatning så behöver an bara trycka ok
+
+	Med en existerande uppladdnings nyckel, så kan man signera appen genom att ange information i build : generate signed bundle
+		
+		inom fönstret behöver man specifera var signerings nyckeln kommer sparas och vilken modul
+
+		Eventuellt automatisering av signering för google play butiken.
+		
+		inom nästa fönster så kan man då specifiera destinations katalogen
+
+		efter slutföringen av wizarden så får man en log där man kan lokalisera nycklarna vid behov
+
+		Därefter kan man begära att ladda upp bundlen som skapades och ladda upp den i google play.
+
+	Vid val av en sida som distributions medel, bör man tillgängliggöra APKn för nerladdning, och om möjligt begära att användare tillåter nedladdning och installation av främmande appar
+	
+		Alternativt till google play är att man laddar upp APKn i en filserver som kan laddas ner cid begäran
+
+
+
+
+	
+
+
+		
