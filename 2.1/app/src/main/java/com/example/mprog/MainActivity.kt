@@ -14,8 +14,8 @@ import kotlin.math.sqrt
 const val EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE"
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity";
-    private val counterFile: File = primeCounterFile();
     private var mEditText: EditText = TODO();
+    private var primeFile : File;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         val fileName = "primecounter";
         val file = File(this.filesDir, fileName);
 
-        if (file == null){
+        if (file.readText() == null){
             return 2.toLong();
         }
         return file.readText().toLong();
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         while(true){
             if (isPrime(currentPrime)){
                 val verifiedPrime = currentPrime.toString();
-                counterFile.writeText(verifiedPrime);
+                this.primeFile.writeText(verifiedPrime);
                 this.mEditText.setText(verifiedPrime);
             }
         }
