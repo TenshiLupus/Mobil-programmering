@@ -15,46 +15,45 @@ const val EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE"
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity";
     private val counterFile: File = primeCounterFile();
-    private lateinit var mEditText: EditText;
+    private var mEditText: EditText = TODO();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        val readPrime = Integer.parseInt(counterFile.readText()).toLong();
         mEditText = findViewById<EditText>(R.id.edit_text);
-
+        val currentPrime = getFilePrime();
+        findNextPrime(currentPrime);
     }
 
-    fun primeCounterFile() : File{
+    private fun getFilePrime() : Long{
         val fileName = "primecounter";
-        return File(this.filesDir, fileName);
+        val file = File(this.filesDir, fileName);
 
-    }
-
-    /** Called when the user taps the Send button */
-    fun sendMessage(view: View) {
-
-        val intent = Intent(this, DisplayMessageActivity::class.java).apply {
-            putExtra(EXTRA_MESSAGE, message)
+        if (file == null){
+            return 2.toLong();
         }
-        startActivity(intent)
+        return file.readText().toLong();
     }
 
     private fun isPrime(candidate: Long): Boolean{
-        var sqrt: Long = sqrt(candidate.toDouble()) as Long;
+        var sqrt: Long = sqrt(candidate.toDouble()).toLong();
         var i: Long = 3;
-        while(i < sqrt){
-            if ((candidate % i ) == 0.toLong()) return false;
-
+        if ((candidate % i ) == 0.toLong()){
+            return false;
         }
         return true;
     }
 
     private fun findNextPrime(current: Long){
-
-        if (isPrime(current)){
-            counterFile.writeText(current.toString());
+        var currentPrime = current;
+        while(true){
+            if (isPrime(currentPrime)){
+                val verifiedPrime = currentPrime.toString();
+                counterFile.writeText(verifiedPrime);
+                this.mEditText.setText(verifiedPrime);
+            }
         }
     }
+
 }
