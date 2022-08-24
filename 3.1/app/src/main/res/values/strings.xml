@@ -1,5 +1,3 @@
 <resources>
-    <string name="app_name">MPROG</string>
-    <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
+    <string name="app_name">mprog</string>
 </resources>
