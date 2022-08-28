@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.videoapp">
 
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="ansdroid.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
 
