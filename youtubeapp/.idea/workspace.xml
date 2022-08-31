@@ -10,16 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8d1f672-4dfc-4bf0-b41e-c4516cac4dcb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../4.1/.idea/workspace.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../4.1/app/src/androidTest/java/com/example/youtubeapp/ExampleInstrumentedTest.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../4.1/app/src/main/java/com/example/youtubeapp/MainActivity.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../4.1/app/src/test/java/com/example/youtubeapp/ExampleUnitTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../4.1/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../4.1/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../4.1/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../4.1/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../4.1/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../4.1/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../4.1/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../4.1/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4.1/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../4.1/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../4.1/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../4.1/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../4.1/app/libs/YouTubeAndroidPlayerApi.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../4.1/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/../4.1/app/proguard-rules.pro" afterDir="false" />
