@@ -12,9 +12,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val stringArray : Array<String> = emptyArray()
+
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CALL_LOG, String[]){Manifest.permission.READ_CALL_LOG})
+
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CALL_LOG)) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALL_LOG),1)
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALL_LOG),1)
+            }
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode)
     }
 
 
