@@ -6,15 +6,23 @@ import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.ListView
+import android.widget.ListAdapter
+import android.widget.ArrayAdapter
+import android.widget.AdapterView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.sql.Date
 import java.text.SimpleDateFormat
 
+private val TAG = "MainActivity"
+
 class MainActivity : AppCompatActivity() {
 
+    private var stringList : Array<String> = emptyArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,10 +93,12 @@ class MainActivity : AppCompatActivity() {
                     "\nCallType: " + dir +
                     "\n Call Date: " + dateString +
                     "\n Call Duration: " + callDuration)
-            sb.append("\n\n###########################\n\n")
+            sb.append("\n\n#\n\n")
 
 
         }
+        stringList = sb.split('#').toTypedArray()
+        Log.d(TAG, "${stringList}")
         managedCursor.close()
         return sb.toString()
     }
