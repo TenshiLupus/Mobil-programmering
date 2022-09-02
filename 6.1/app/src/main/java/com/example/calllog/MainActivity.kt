@@ -36,8 +36,12 @@ class MainActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALL_LOG),1)
             }
         }else {
-            val textView : TextView =  findViewById(R.id.textView) as TextView
-            textView.setText(getCallDetails())
+
+            val returnedArray = getCallDetails()
+            val la : ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1, returnedArray)
+            val callsLog : ListView = findViewById(R.id.callsList)
+            callsLog.adapter = la
+
         }
     }
 
@@ -52,8 +56,13 @@ class MainActivity : AppCompatActivity() {
                 if(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
                         Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show()
-                        val textView : TextView =  findViewById(R.id.textView) as TextView
-                        textView.setText(getCallDetails())
+                        //make a call log list
+                        val returnedArray = getCallDetails()
+                        val la : ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1, returnedArray)
+                        val callsLog : ListView = findViewById(R.id.callsList)
+                        callsLog.adapter = la
+
+
                     }
                 }
                 else {
@@ -65,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getCallDetails() : String {
+    private fun getCallDetails() : Array<String> {
         val sb : StringBuffer = StringBuffer()
         val managedCursor : Cursor? = contentResolver.query(CallLog.Calls.CONTENT_URI, null, null, null, null)
         val number : Int = managedCursor!!.getColumnIndex(CallLog.Calls.NUMBER)
@@ -100,7 +109,8 @@ class MainActivity : AppCompatActivity() {
         stringList = sb.split('#').toTypedArray()
         Log.d(TAG, "${stringList}")
         managedCursor.close()
-        return sb.toString()
+
+        return stringList
     }
 
 
