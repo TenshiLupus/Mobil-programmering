@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsMessage
+import android.widget.Toast
 import java.util.*
 
 private const val TAG = "SmsReceiver"
@@ -19,20 +20,20 @@ class SmsReceiver : BroadcastReceiver() {
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
 
         val bundle : Bundle? = intent.extras
-        val msgs : Array<SmsMessage>? = null
-        val strMessage = ""
+        var msgs : Array<SmsMessage?>? = null
+        var strMessage = ""
         if(bundle != null){
-            val pdus : Array<Objects>  = bundle.get("pdus")
-            msgs = SmsMessage[pdus.]
+            val pdus : Array<Objects>  = bundle.get("pdus") as Array<Objects>
+            msgs = arrayOfNulls<SmsMessage>(pdus.size)
+
+            var i : Int = 0
+            while(i < msgs.size){
+                msgs[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray)
+                strMessage = (msgs[i]?.messageBody) as String
+                Toast.makeText(context, strMessage, Toast.LENGTH_SHORT).show()
+            }
+
         }
 
-        //retrieve the SMS message in small segments
-
-        val pdus : Array<*> = arrayOf(bundle.get(pdu_type))
-        if(pdus != null){
-            //Check android version
-            val isVersionM : Boolean = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-
-        }
     }
 }
