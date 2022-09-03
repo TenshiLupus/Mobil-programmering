@@ -1,12 +1,16 @@
 package com.example.calllog
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
+import android.text.TextUtils.indexOf
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ListView
@@ -37,14 +41,12 @@ class MainActivity : AppCompatActivity() {
             }
         }else {
 
-            val returnedArray = getCallDetails()
-            val la : ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1, returnedArray)
-            val callsLog : ListView = findViewById(R.id.callsList)
-            callsLog.adapter = la
+           getCallDetails()
 
         }
     }
 
+    //Present result based on permission request
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -57,11 +59,7 @@ class MainActivity : AppCompatActivity() {
                     if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
                         Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show()
                         //make a call log list
-                        val returnedArray = getCallDetails()
-                        val la : ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1, returnedArray)
-                        val callsLog : ListView = findViewById(R.id.callsList)
-                        callsLog.adapter = la
-
+                        getCallDetails()
 
                     }
                 }
@@ -74,7 +72,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getCallDetails() : Array<String> {
+    //Retrieve call logs from system handled by a ListView adapter
+    private fun getCallDetails() {
         val sb : StringBuffer = StringBuffer()
         val managedCursor : Cursor? = contentResolver.query(CallLog.Calls.CONTENT_URI, null, null, null, null)
         val number : Int = managedCursor!!.getColumnIndex(CallLog.Calls.NUMBER)
@@ -104,13 +103,33 @@ class MainActivity : AppCompatActivity() {
                     "\n Call Duration: " + callDuration)
             sb.append("\n\n#\n\n")
 
+        }
+
+
+        stringList = sb.split('#').toTypedArray()
+
+        val returnedArray = stringList
+        val la : ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1, returnedArray)
+        val callsLog : ListView = findViewById(R.id.callsList)
+        callsLog.adapter = la
+
+        callsLog.onItemClickListener = AdapterView.OnItemClickListener{ parent : AdapterView<*>, view1: View, position: Int, id : Long ->
+
+            //assign number based on the number stored in string format
+            val log =  parent.getItemAtPosition(position).toString()
+            val beggining = log.indexOf("Phone Number: ") + 14
+            Log.d(TAG, "${log.indexOf("Phone Number: ")} ")
+            Log.d(TAG, "${beggining}")
+            val tel = log.substring(beggining, beggining + 11)
+            Log.d(TAG, tel)
+            val intentStr = "tel:" + tel
+            val telIntent = Intent(Intent.ACTION_DIAL, Uri.parse(intentStr))
+            startActivity(telIntent)
 
         }
-        stringList = sb.split('#').toTypedArray()
         Log.d(TAG, "${stringList}")
         managedCursor.close()
 
-        return stringList
     }
 
 
