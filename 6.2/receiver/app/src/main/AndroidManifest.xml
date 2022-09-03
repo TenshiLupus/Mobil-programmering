@@ -3,10 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.smsreceiver">
 
-    <uses-permission android:name="android.permission.SEND_SMS">
-    </uses-permission>
-    <uses-permission android:name="android.permission.RECEIVE_SMS">
-    </uses-permission>
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,6 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SMSreceiver"
         tools:targetApi="31">
+        <receiver
+            android:name=".SmsReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+
+        </receiver>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -26,6 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
