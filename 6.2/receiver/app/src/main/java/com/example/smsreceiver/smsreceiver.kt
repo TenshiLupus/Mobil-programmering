@@ -15,7 +15,6 @@ private const val pdu_type = "pdus"
 class SmsReceiver : BroadcastReceiver() {
 
 
-    @TargetApi(Build.VERSION_CODES.Q)
     override fun onReceive(context: Context, intent: Intent) {
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
 

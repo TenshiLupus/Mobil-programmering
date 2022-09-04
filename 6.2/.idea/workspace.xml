@@ -10,92 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7c3460a-85e2-4cba-bd19-9d3714e727e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/receiver/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/proguard-rules.pro" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/androidTest/java/com/example/smsreceiver/ExampleInstrumentedTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/java/com/example/smsreceiver/MainActivity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-hdpi/ic_launcher.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-mdpi/ic_launcher.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/values-night/themes.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/values/colors.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/values/themes.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/xml/backup_rules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/main/res/xml/data_extraction_rules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/app/src/test/java/com/example/smsreceiver/ExampleUnitTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/gradle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/receiver/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../2.1/app/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../2.1/app/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../2.1/app/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../2.1/app/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../2.1/app/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../6.1/app/src/main/java/com/example/calllog/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../6.1/app/src/main/java/com/example/calllog/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/proguard-rules.pro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/androidTest/java/com/example/calllog/ExampleInstrumentedTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/java/com/example/calllog/MainActivity.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-hdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-mdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/values-night/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/values/colors.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/values/strings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/values/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/xml/backup_rules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/main/res/xml/data_extraction_rules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/app/src/test/java/com/example/calllog/ExampleUnitTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/gradle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../calllog/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/receiver/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/receiver/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/receiver/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/receiver/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/receiver/app/src/main/java/com/example/smsreceiver/smsreceiver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/receiver/app/src/main/java/com/example/smsreceiver/smsreceiver.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +39,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/sender" />
   </component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
@@ -203,5 +121,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
