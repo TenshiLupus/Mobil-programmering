@@ -30,6 +30,7 @@ class SmsReceiver : BroadcastReceiver() {
                 msgs[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray)
                 strMessage = (msgs[i]?.messageBody) as String
                 Toast.makeText(context, strMessage, Toast.LENGTH_SHORT).show()
+                i++
             }
 
         }
