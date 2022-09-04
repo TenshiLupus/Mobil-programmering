@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsMessage
+import android.util.Log
 import android.widget.Toast
 import java.util.*
 
@@ -19,17 +20,27 @@ class SmsReceiver : BroadcastReceiver() {
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
 
         val bundle : Bundle? = intent.extras
-        var msgs : Array<SmsMessage?>? = null
+        var msgs : Array<SmsMessage?>?
         var strMessage = ""
-        if(bundle != null){
-            val pdus : Array<Objects>  = bundle.get("pdus") as Array<Objects>
+        val format : String? = bundle?.getString("format")
+        val pdus : Array<*>  = bundle?.get(pdu_type) as Array<*>
+
+        if(pdus != null){
+            val isVersionM = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             msgs = arrayOfNulls<SmsMessage>(pdus.size)
 
             var i : Int = 0
             while(i < msgs.size){
-                msgs[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray)
-                strMessage = (msgs[i]?.messageBody) as String
-                Toast.makeText(context, strMessage, Toast.LENGTH_SHORT).show()
+                if(isVersionM){
+                    msgs[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray,format)
+                }else{
+                    msgs[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray)
+                }
+
+                strMessage += "SMS from " + msgs[i]?.originatingAddress
+                strMessage += " :" + msgs[i]?.messageBody + "\n"
+                Log.d(TAG, "onReceive: " + strMessage)
+                Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show()
                 i++
             }
 
