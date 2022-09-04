@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/copyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Copy" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="225dp"
+        android:layout_height="78dp"
+        android:layout_above="@+id/copyButton"
+
+        android:layout_centerHorizontal="false"
+
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="101dp"
+        android:layout_marginBottom="169dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Enter some text here"
+        android:visibility="visible" />
+
+</LinearLayout>
