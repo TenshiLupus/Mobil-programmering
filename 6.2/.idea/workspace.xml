@@ -10,9 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7c3460a-85e2-4cba-bd19-9d3714e727e5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/receiver/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/receiver/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/receiver/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/receiver/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/receiver/app/src/main/java/com/example/smsreceiver/smsreceiver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/receiver/app/src/main/java/com/example/smsreceiver/smsreceiver.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sender/.idea/deploymentTargetDropDown.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/receiver/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/receiver/.idea/deploymentTargetDropDown.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sender/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/sender/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,9 +96,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
