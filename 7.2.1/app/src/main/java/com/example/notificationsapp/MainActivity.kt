@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
@@ -21,21 +22,22 @@ private const val NOTIFICATION_ID = 0
 class MainActivity : AppCompatActivity() {
     private lateinit var buttonDialog : Button
     private lateinit var buttonNotification : Button
-
+    private lateinit var buttonToast : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createNotificationChannel()
 
+        //Buttons
         buttonDialog = findViewById(R.id.dialog_button)
         buttonNotification = findViewById(R.id.notification_button)
-        buttonDialog.setOnClickListener{
-            openDialog()
+        buttonToast = findViewById(R.id.toast_button)
 
-        }
 
+        //Notification Button setup
         val intent = Intent(this, MainActivity::class.java)
+
         val pendingIntent = TaskStackBuilder.create(this).run {
             addNextIntentWithParentStack(intent)
             getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -50,19 +52,29 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         val notificationManager = NotificationManagerCompat.from(this)
+
+
+        //Setup button functionality
+        buttonDialog.setOnClickListener{
+            openDialog()
+        }
         buttonNotification.setOnClickListener{
             notificationManager.notify(NOTIFICATION_ID,notification)
         }
-    }
+        buttonToast.setOnClickListener {
+            Toast.makeText(this, "Toasted", Toast.LENGTH_SHORT).show()
+        }
 
+    }
 
     fun createNotificationChannel(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT).apply{
                 lightColor = Color.GREEN
                 enableLights(true)
-                val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             }
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
         }
     }
 
@@ -70,4 +82,6 @@ class MainActivity : AppCompatActivity() {
         val dialog : ExampleDialog = ExampleDialog()
         dialog.show(supportFragmentManager, "example Dialog")
     }
+
+
 }
