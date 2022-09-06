@@ -2,8 +2,10 @@ package com.example.notificationsapp
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.TaskStackBuilder
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +14,7 @@ import android.widget.Button
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
-private const val CHANNEL_ID = "7"
+private const val CHANNEL_ID = "SEVEN"
 private const val CHANNEL_NAME = "tricorn"
 private const val NOTIFICATION_ID = 0
 
@@ -33,13 +35,18 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        val pendingIntent = TaskStackBuilder.create(this)
+        val intent = Intent(this, MainActivity::class.java)
+        val pendingIntent = TaskStackBuilder.create(this).run {
+            addNextIntentWithParentStack(intent)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Notification triggered")
             .setContentText("This notifcation has been triggered by the app")
-            .setSmallIcon(com.google.android.material.R.drawable.abc_ic_star_black_16dp)
+            .setSmallIcon(R.drawable.ic_launcher_background)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
             .build()
 
         val notificationManager = NotificationManagerCompat.from(this)

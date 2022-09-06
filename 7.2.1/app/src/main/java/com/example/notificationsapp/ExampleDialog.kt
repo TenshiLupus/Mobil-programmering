@@ -18,7 +18,7 @@ class ExampleDialog : AppCompatDialogFragment() {
             .setMessage("proceed to program?")
             .setPositiveButton("Accept", DialogInterface.OnClickListener{
                 dialog: DialogInterface?, which: Int ->
-                Toast.makeText("")
+                Toast.makeText(activity, "Accepted", Toast.LENGTH_LONG)
 
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener{
