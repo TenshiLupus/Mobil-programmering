@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 
 class ExampleDialog : AppCompatDialogFragment() {
@@ -13,11 +14,15 @@ class ExampleDialog : AppCompatDialogFragment() {
 
         val builder : AlertDialog.Builder = AlertDialog.Builder(activity)
 
-        builder.setTitle("Information")
-            .setMessage("This is a Dialog")
-            .setPositiveButton("ok", DialogInterface.OnClickListener{
+        builder.setTitle("This a dialog popup")
+            .setMessage("proceed to program?")
+            .setPositiveButton("Accept", DialogInterface.OnClickListener{
                 dialog: DialogInterface?, which: Int ->
+                Toast.makeText("")
 
+            })
+            .setNegativeButton("Cancel", DialogInterface.OnClickListener{
+                dialog, which ->
 
             })
         return builder.create()
