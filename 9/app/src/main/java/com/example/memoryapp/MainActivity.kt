@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
 
         val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
         val randomizedImages = (chosenImages + chosenImages).shuffled()
-
+        randomizedImages.q
+        
         recyclerViewBoard.adapter = MemoryBoardAdapter(this,boardSize, randomizedImages)
         recyclerViewBoard.setHasFixedSize(true)
         recyclerViewBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
