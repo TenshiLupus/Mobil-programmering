@@ -6,10 +6,11 @@ import com.example.memoryapp.utils.DEFAULT_ICONS
 
 class MemoryGame (private val boardSize : BoardSize){
 
-    lateinit var cards: List<MemoryCard>
 
+    lateinit var cards: List<MemoryCard>
     var numPairsFound = 0
 
+    private var numCardFlips = 0
     private var indexOfSingleSelectedCard : Int? = null
 
     init {
@@ -19,18 +20,20 @@ class MemoryGame (private val boardSize : BoardSize){
     }
 
 
-    fun flipCard(position : Int){
-
+    fun flipCard(position : Int) : Boolean {
+        numCardFlips++
+        val card = cards[position]
         var foundMatch = false
+
         if(indexOfSingleSelectedCard == null){
             restoreCards()
             indexOfSingleSelectedCard = position
         } else{
-            val foundMatch = checkForMatch(indexOfSingleSelectedCard!!, position)
+            foundMatch = checkForMatch(indexOfSingleSelectedCard!!, position)
             indexOfSingleSelectedCard = null
         }
-        val card = cards[position]
         card.isFaceUp = !card.isFaceUp
+        return foundMatch
     }
 
     private fun checkForMatch(position1: Int, position2: Int): Boolean {
@@ -58,4 +61,7 @@ class MemoryGame (private val boardSize : BoardSize){
         return cards[position].isFaceUp
     }
 
+    fun getNumMoves() : Int {
+        return numCardFlips / 2
+    }
 }

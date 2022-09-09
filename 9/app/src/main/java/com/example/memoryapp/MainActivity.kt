@@ -1,11 +1,13 @@
 package com.example.memoryapp
 
+import android.animation.ArgbEvaluator
 import android.app.GameManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memoryapp.models.BoardSize
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         textViewNumberMoves = findViewById(R.id.textViewNumberMoves)
         textViewNumberPairs = findViewById(R.id.textViewNumberPairs)
 
+        textViewNumberPairs.setTextColor(ContextCompat.getColor(this, R.color.color_progress_none))
         memoryGame = MemoryGame(boardSize)
         
         adapter = MemoryBoardAdapter(this,boardSize, memoryGame.cards, object : MemoryBoardAdapter.CardClickListener{
@@ -60,7 +63,21 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(clRoot, "Invalid move!", Snackbar.LENGTH_LONG).show()
             return
         }
-        memoryGame.flipCard(position)
+
+        if(memoryGame.flipCard(position)) {
+            Log.i(TAG, "Found a match! Num pairs found: ${memoryGame.numPairsFound}")
+            val color = ArgbEvaluator().evaluate(
+                memoryGame.numPairsFound.toFloat() / boardSize.getNumPairs(),
+                ContextCompat.getColor(this, R.color.color_progress_none),
+                ContextCompat.getColor(this, R.color.color_progress_full)
+            ) as Int
+            textViewNumberPairs.setTextColor(color)
+            textViewNumberPairs.text = "Pairs: ${memoryGame.numPairsFound} / ${boardSize.getNumPairs()}"
+            if(memoryGame.haveWonGame()){
+                Snackbar.make(clRoot, "You won! Congratulations", Snackbar.LENGTH_LONG)
+            }
+        }
+        textViewNumberMoves.text = "Moves: ${memoryGame.getNumMoves()}"
         adapter.notifyDataSetChanged()
     }
 
