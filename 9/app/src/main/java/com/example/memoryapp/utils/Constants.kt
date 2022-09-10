@@ -2,6 +2,7 @@ package com.example.memoryapp.utils
 
 import com.example.memoryapp.R
 
+const val EXTRA_BOARD_SIZE = "EXTRA_BOARD_SIZE"
 val DEFAULT_ICONS = listOf(
     R.drawable.ic_ball,
     R.drawable.ic_face,
