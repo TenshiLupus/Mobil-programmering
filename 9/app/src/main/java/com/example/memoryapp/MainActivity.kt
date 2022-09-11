@@ -45,7 +45,11 @@ class MainActivity : AppCompatActivity() {
         textViewNumberMoves = findViewById(R.id.textViewNumberMoves)
         textViewNumberPairs = findViewById(R.id.textViewNumberPairs)
 
+        val intent = Intent(this, CreateActivity::class.java)
+        intent.putExtra(EXTRA_BOARD_SIZE, BoardSize.MEDIUM)
+        startActivity(intent)
 
+        setupBoard()
     }
 
     private fun setupBoard(){
