@@ -13,11 +13,12 @@ import kotlin.math.min
 class ImagePickerAdapter(
     private val context : Context,
     private val imageUris: List<Uri>,
-    private val boardSize: BoardSize)
+    private val boardSize: BoardSize,
+    private val imageClickListener : ImageClickListener)
     : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
 
     interface ImageClickListener{
-
+        fun onPlaceholderClicked()
     }
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -32,7 +33,7 @@ class ImagePickerAdapter(
         // Intent to select image from gallery
         fun bind() {
             imageViewCustomImage.setOnClickListener{
-
+                imageClickListener.onPlaceHolderClicked()
             }
         }
     }
