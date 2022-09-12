@@ -1,24 +1,31 @@
   package com.example.memoryapp
 
 import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memoryapp.models.BoardSize
+import com.example.memoryapp.utils.BitmapScaler
 import com.example.memoryapp.utils.EXTRA_BOARD_SIZE
 import com.example.memoryapp.utils.isPermissionGranted
 import com.example.memoryapp.utils.requestPermission
+import java.io.ByteArrayOutputStream
 
   class CreateActivity : AppCompatActivity() {
 
@@ -27,6 +34,8 @@ import com.example.memoryapp.utils.requestPermission
           private const val PICK_PHOTO_CODE = 3
           private const val READ_EXTERNAL_PHOTOS_CODE = 42
           private const val READ_PHOTOS_PERMISSION = android.Manifest.permission.READ_EXTERNAL_STORAGE
+        private const val MIN_GAME_NAME_LENGTH = 3
+        private const val MAX_GAME_NAME_LENGTH = 14
       }
 
 
@@ -54,6 +63,25 @@ import com.example.memoryapp.utils.requestPermission
           numImagesRequired = boardSize.getNumPairs()
           supportActionBar?.title = "Choose pic (0 / $numImagesRequired)"
 
+          btnSave.setOnClickListener{
+              saveDataToFirebase()
+          }
+
+          editTextGameName.filters = arrayOf(InputFilter.LengthFilter(MAX_GAME_NAME_LENGTH))
+          editTextGameName.addTextChangedListener(object : TextWatcher{
+              override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                  TODO("Not yet implemented")
+              }
+
+              override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                  TODO("Not yet implemented")
+              }
+
+              override fun afterTextChanged(s: Editable?) {
+                  btnSave.isEnabled = shouldEnableSaveButton()
+              }
+
+          })
           imagePickerAdapter = ImagePickerAdapter(this, chosenImageUris, boardSize, object: ImagePickerAdapter.ImageClickListener{
               override fun onPlaceholderClicked(){
                   if(isPermissionGranted(this@CreateActivity, READ_PHOTOS_PERMISSION)){
@@ -66,6 +94,29 @@ import com.example.memoryapp.utils.requestPermission
           })
           recycleViewImagePicker.setHasFixedSize(true)
           recycleViewImagePicker.layoutManager = GridLayoutManager(this, boardSize.getWidth())
+      }
+
+      //Will store relevant data from the application state in a firebase cloud storage
+      private fun saveDataToFirebase() {
+          Log.i(TAG, "saveDataToFirebase")
+          for((index, photoUri) in chosenImageUris.withIndex()) {
+              val imageByteArray = getImageByteArray(photoUri)
+          }
+      }
+
+      private fun getImageByteArray(photoUri: Uri): ByteArray {
+        val originalBitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val source = ImageDecoder.createSource(contentResolver, photoUri)
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            MediaStore.Images.Media.getBitmap(contentResolver, photoUri)
+        }
+          Log.i(TAG, "Original width ${originalBitmap.width} and height ${originalBitmap.height}")
+          val scaleBitmap = BitmapScaler.scaleToFitHeight
+          Log.i(TAG, "Scaled width: ${scaledBitmap.width} and height ${scaledBitmap.height}")
+          val byteOutputStream = ByteArrayOutputStream()
+          scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 60, byteOutputStream)
+          return byteOutputStream.toByteArray
       }
 
       override fun onRequestPermissionsResult(
@@ -123,7 +174,7 @@ import com.example.memoryapp.utils.requestPermission
           if (chosenImageUris.size != numImagesRequired) {
               return false
           }
-          if (editTextGameName.text.isBlank() || editTextGameName.text.length < 3){
+          if (editTextGameName.text.isBlank() || editTextGameName.text.length < MIN_GAME_NAME_LENGTH){
               return false
           }
           return true
