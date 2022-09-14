@@ -2,7 +2,7 @@ package com.example.memoryapp.utils
 
 import android.graphics.Bitmap
 
-class BitmapScaler {
+object BitmapScaler {
 
     fun scaleToFitWidth(b: Bitmap, width : Int) : Bitmap {
         val factor = width / b.width.toFloat()

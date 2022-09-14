@@ -51,6 +51,7 @@ import java.io.ByteArrayOutputStream
       private lateinit var progressionBarUploading : ProgressBar
 
 
+
       private lateinit var imagePickerAdapter : ImagePickerAdapter
       private lateinit var boardSize : BoardSize
       private var chosenImageUris : MutableList<Uri> = mutableListOf()

@@ -4,7 +4,9 @@ import com.example.memoryapp.models.BoardSize
 import com.example.memoryapp.models.MemoryCard
 import com.example.memoryapp.utils.DEFAULT_ICONS
 
-class MemoryGame (private val boardSize : BoardSize){
+class MemoryGame(
+    private val boardSize: BoardSize,
+    private val customImages: List<String>?){
 
 
     lateinit var cards: List<MemoryCard>
@@ -14,9 +16,15 @@ class MemoryGame (private val boardSize : BoardSize){
     private var indexOfSingleSelectedCard : Int? = null
 
     init {
-        val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
-        val randomizedImages = (chosenImages + chosenImages).shuffled()
-        cards = randomizedImages.map { MemoryCard(it)}
+        //whether this is triggered will depend if the user previously selected images to play with otherwise the default cards will be used
+        if ( customImages == null) {
+            val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
+            val randomizedImages = (chosenImages + chosenImages).shuffled()
+            cards = randomizedImages.map { MemoryCard(it) }
+        } else{
+            val randomizedImages = (customImages + customImages).shuffled()
+            cards = randomizedImages.map {MemoryCard(it.hashCode(), it)}
+        }
     }
 
 
