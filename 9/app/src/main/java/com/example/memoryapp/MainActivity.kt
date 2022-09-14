@@ -1,6 +1,7 @@
 package com.example.memoryapp
 
 import android.animation.ArgbEvaluator
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -107,6 +108,13 @@ class MainActivity : AppCompatActivity() {
         }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == CREATE_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            val customGameName = data?.getStringExtra(EXTRA_GAME_NAME)
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun showCreationDialog() {

@@ -14,8 +14,10 @@
   import android.text.TextWatcher
   import android.util.Log
   import android.view.MenuItem
+  import android.view.View
   import android.widget.Button
   import android.widget.EditText
+  import android.widget.ProgressBar
   import android.widget.Toast
   import androidx.appcompat.app.AlertDialog
   import androidx.appcompat.app.AppCompatActivity
@@ -46,6 +48,8 @@ import java.io.ByteArrayOutputStream
       private lateinit var recycleViewImagePicker : RecyclerView
       private lateinit var editTextGameName : EditText
       private lateinit var btnSave : Button
+      private lateinit var progressionBarUploading : ProgressBar
+
 
       private lateinit var imagePickerAdapter : ImagePickerAdapter
       private lateinit var boardSize : BoardSize
@@ -62,6 +66,7 @@ import java.io.ByteArrayOutputStream
           recycleViewImagePicker.findViewById<RecyclerView>(R.id.recycleViewImagePicker)
           editTextGameName.findViewById<EditText>(R.id.editTextGameName)
           btnSave.findViewById<Button>(R.id.btnSave)
+          progressionBarUploading.findViewById<ProgressBar>(R.id.progressBarUploading)
 
           supportActionBar?.setDisplayHomeAsUpEnabled(true)
           boardSize = intent.getSerializableExtra(EXTRA_BOARD_SIZE) as BoardSize
@@ -126,6 +131,7 @@ import java.io.ByteArrayOutputStream
       }
 
       private fun handleImageUploading(gameName: String){
+          progressionBarUploading.visibility = View.VISIBLE
           var didEncounterError = false
           val uploadedImageUrls = mutableListOf<String>()
           for((index, photoUri) in chosenImageUris.withIndex()) {
@@ -145,10 +151,12 @@ import java.io.ByteArrayOutputStream
                           return@addOnCompleteListener
                       }
                       if (didEncounterError){
+                          progressionBarUploading.visibility = View.GONE
                           return@addOnCompleteListener
                       }
                       val downloadUrl = downloadUrlTask.result.toString()
                       uploadedImageUrls.add(downloadUrl)
+                      progressionBarUploading.progress = uploadedImageUrls.size * 100 / chosenImageUris.size
                       Log.i(TAG, "Finished uploading $photoUri, numUploaded")
                       if(uploadedImageUrls.size == chosenImageUris.size){
                           handleAllImagesUploaded(gameName, uploadedImageUrls)
@@ -162,6 +170,7 @@ import java.io.ByteArrayOutputStream
           db.collection("games").document( gameName)
               .set(mapOf("images" to imageUrls))
               .addOnCompleteListener{ gameCreationTask ->
+                  progressionBarUploading.visibility = View.GONE
                   if(!gameCreationTask.isSuccessful){
                       Log.e(TAG, "exception with game creation", gameCreationTask.exception)
                       Toast.makeText(this, "Failed game creation", Toast.LENGTH_LONG).show()
