@@ -1,30 +1,33 @@
   package com.example.memoryapp
-
-import android.app.Activity
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.provider.MediaStore
-import android.text.Editable
-import android.text.InputFilter
-import android.text.TextWatcher
-import android.util.Log
-import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+  import android.Manifest
+  import android.app.Activity
+  import android.content.Intent
+  import android.content.pm.PackageManager
+  import android.graphics.Bitmap
+  import android.graphics.ImageDecoder
+  import android.net.Uri
+  import android.os.Build
+  import android.os.Bundle
+  import android.provider.MediaStore
+  import android.text.Editable
+  import android.text.InputFilter
+  import android.text.TextWatcher
+  import android.util.Log
+  import android.view.MenuItem
+  import android.widget.Button
+  import android.widget.EditText
+  import android.widget.Toast
+  import androidx.appcompat.app.AlertDialog
+  import androidx.appcompat.app.AppCompatActivity
+  import androidx.recyclerview.widget.GridLayoutManager
+  import androidx.recyclerview.widget.RecyclerView
+  import com.google.firebase.firestore.ktx.firestore
+  import com.google.firebase.storage.ktx.storage
 import com.example.memoryapp.models.BoardSize
-import com.example.memoryapp.utils.BitmapScaler
-import com.example.memoryapp.utils.EXTRA_BOARD_SIZE
-import com.example.memoryapp.utils.isPermissionGranted
-import com.example.memoryapp.utils.requestPermission
+  import com.example.memoryapp.utils.*
+  import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 
   class CreateActivity : AppCompatActivity() {
@@ -46,8 +49,10 @@ import java.io.ByteArrayOutputStream
 
       private lateinit var imagePickerAdapter : ImagePickerAdapter
       private lateinit var boardSize : BoardSize
-      private val chosenImageUris = mutableListOf<Uri>()
+      private var chosenImageUris : MutableList<Uri> = mutableListOf()
       private var numImagesRequired = -1
+      private val storage = Firebase.storage
+      private val db = Firebase.firestore
 
 
       override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +63,7 @@ import java.io.ByteArrayOutputStream
           editTextGameName.findViewById<EditText>(R.id.editTextGameName)
           btnSave.findViewById<Button>(R.id.btnSave)
 
-          supportActionBar?.setDisplayHomeAsUpEnabled(true,)
+          supportActionBar?.setDisplayHomeAsUpEnabled(true)
           boardSize = intent.getSerializableExtra(EXTRA_BOARD_SIZE) as BoardSize
           numImagesRequired = boardSize.getNumPairs()
           supportActionBar?.title = "Choose pic (0 / $numImagesRequired)"
@@ -98,10 +103,80 @@ import java.io.ByteArrayOutputStream
 
       //Will store relevant data from the application state in a firebase cloud storage
       private fun saveDataToFirebase() {
+          val customGameName = editTextGameName.text.toString()
+          btnSave.isEnabled = false
           Log.i(TAG, "saveDataToFirebase")
+          //Ensure we are not overwriting existing data
+          db.collection("games").document(customGameName).get().addOnSuccessListener{ document ->
+              if (document != null && document.data != null ){
+                  AlertDialog.Builder(this)
+                      .setTitle("Name taken")
+                      .setMessage("A game already exists with the name $customGameName. Please choose another")
+                      .setPositiveButton("OK", null)
+                      .show()
+                  btnSave.isEnabled = true
+              }else{
+                  handleImageUploading(customGameName)
+              }
+          }.addOnFailureListener{exception ->
+              Log.e(TAG, "Encountered error while saving memory game", exception)
+              Toast.makeText(this, "Encountered error while saving memory game", Toast.LENGTH_SHORT).show()
+          }
+
+      }
+
+      private fun handleImageUploading(gameName: String){
+          var didEncounterError = false
+          val uploadedImageUrls = mutableListOf<String>()
           for((index, photoUri) in chosenImageUris.withIndex()) {
               val imageByteArray = getImageByteArray(photoUri)
+              val filePath = "images/${gameName}/${System.currentTimeMillis()}-${index}.jpg"
+              val photoReference = storage.reference.child(filePath)
+              photoReference.putBytes(imageByteArray)
+                  .continueWithTask{photoUploadTask ->
+                      Log.i(TAG, "Uploaded bytes: ${photoUploadTask.result?.bytesTransferred}")
+                      photoReference.downloadUrl
+
+                  }.addOnCompleteListener{downloadUrlTask ->
+                      if (!downloadUrlTask.isSuccessful) {
+                          Log.e(TAG, "Exception with Firebase storage", downloadUrlTask.exception)
+                          Toast.makeText(this, "Failed to upload image", Toast.LENGTH_LONG).show()
+                          didEncounterError = true
+                          return@addOnCompleteListener
+                      }
+                      if (didEncounterError){
+                          return@addOnCompleteListener
+                      }
+                      val downloadUrl = downloadUrlTask.result.toString()
+                      uploadedImageUrls.add(downloadUrl)
+                      Log.i(TAG, "Finished uploading $photoUri, numUploaded")
+                      if(uploadedImageUrls.size == chosenImageUris.size){
+                          handleAllImagesUploaded(gameName, uploadedImageUrls)
+                      }
+                  }
           }
+      }
+
+      private fun handleAllImagesUploaded(gameName: String, imageUrls: MutableList<String>) {
+          //A list of games that everyone have created
+          db.collection("games").document( gameName)
+              .set(mapOf("images" to imageUrls))
+              .addOnCompleteListener{ gameCreationTask ->
+                  if(!gameCreationTask.isSuccessful){
+                      Log.e(TAG, "exception with game creation", gameCreationTask.exception)
+                      Toast.makeText(this, "Failed game creation", Toast.LENGTH_LONG).show()
+                      return@addOnCompleteListener
+                  }
+                  Log.i(TAG, "Sucessfully created game $gameName")
+                  AlertDialog.Builder(this)
+                      .setTitle("upload complete! Let's play your game $gameName")
+                      .setPositiveButton("OK") { _,_ ->
+                          val resultData = Intent()
+                          resultData.putExtra(EXTRA_GAME_NAME, gameName)
+                          setResult(Activity.RESULT_OK, resultData)
+                          finish()
+                      }.show()
+              }
       }
 
       private fun getImageByteArray(photoUri: Uri): ByteArray {
@@ -112,11 +187,11 @@ import java.io.ByteArrayOutputStream
             MediaStore.Images.Media.getBitmap(contentResolver, photoUri)
         }
           Log.i(TAG, "Original width ${originalBitmap.width} and height ${originalBitmap.height}")
-          val scaleBitmap = BitmapScaler.scaleToFitHeight
+          val scaledBitmap = BitmapScaler.scaleToFitHeight(originalBitmap, 250)
           Log.i(TAG, "Scaled width: ${scaledBitmap.width} and height ${scaledBitmap.height}")
           val byteOutputStream = ByteArrayOutputStream()
           scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 60, byteOutputStream)
-          return byteOutputStream.toByteArray
+          return byteOutputStream.toByteArray()
       }
 
       override fun onRequestPermissionsResult(
