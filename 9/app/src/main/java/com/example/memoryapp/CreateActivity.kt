@@ -1,4 +1,5 @@
-  package com.example.memoryapp
+package com.example.memoryapp
+
   import android.Manifest
   import android.app.Activity
   import android.content.Intent
@@ -23,14 +24,15 @@
   import androidx.appcompat.app.AppCompatActivity
   import androidx.recyclerview.widget.GridLayoutManager
   import androidx.recyclerview.widget.RecyclerView
+
   import com.google.firebase.firestore.ktx.firestore
+  import com.google.firebase.ktx.Firebase
   import com.google.firebase.storage.ktx.storage
-import com.example.memoryapp.models.BoardSize
+
+  import com.example.memoryapp.R
+  import com.example.memoryapp.models.BoardSize
   import com.example.memoryapp.utils.*
-  import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import java.io.ByteArrayOutputStream
+  import java.io.ByteArrayOutputStream
 
   class CreateActivity : AppCompatActivity() {
 
@@ -38,7 +40,7 @@ import java.io.ByteArrayOutputStream
           private const val TAG = "CreateActivity"
           private const val PICK_PHOTO_CODE = 3
           private const val READ_EXTERNAL_PHOTOS_CODE = 42
-          private const val READ_PHOTOS_PERMISSION = android.Manifest.permission.READ_EXTERNAL_STORAGE
+          private const val READ_PHOTOS_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE
           private const val MIN_GAME_NAME_LENGTH = 3
           private const val MAX_GAME_NAME_LENGTH = 14
       }
@@ -50,7 +52,7 @@ import java.io.ByteArrayOutputStream
 
       private lateinit var imagePickerAdapter : ImagePickerAdapter
       private lateinit var boardSize : BoardSize
-      private var chosenImageUris : MutableList<Uri> = mutableListOf()
+      private var chosenImageUris = mutableListOf<Uri>()
       private var numImagesRequired = -1
       private val storage = Firebase.storage
       private val db = Firebase.firestore
@@ -97,6 +99,7 @@ import java.io.ByteArrayOutputStream
               }
 
           })
+          recycleViewImagePicker.adapter = imagePickerAdapter
           recycleViewImagePicker.setHasFixedSize(true)
           recycleViewImagePicker.layoutManager = GridLayoutManager(this, boardSize.getWidth())
       }
