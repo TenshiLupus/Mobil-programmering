@@ -106,9 +106,10 @@ package com.example.memoryapp
 
       //Will store relevant data from the application state in a firebase cloud storage
       private fun saveDataToFirebase() {
-          val customGameName = editTextGameName.text.toString()
+          Log.i(TAG, "Saving data to firebase")
+          val customGameName = editTextGameName.text.toString().trim()
           btnSave.isEnabled = false
-          Log.i(TAG, "saveDataToFirebase")
+
           //Ensure we are not overwriting existing data
           db.collection("games").document(customGameName).get().addOnSuccessListener{ document ->
               if (document != null && document.data != null ){
@@ -155,11 +156,12 @@ package com.example.memoryapp
                       val downloadUrl = downloadUrlTask.result.toString()
                       uploadedImageUrls.add(downloadUrl)
                       progressionBarUploading.progress = uploadedImageUrls.size * 100 / chosenImageUris.size
-                      Log.i(TAG, "Finished uploading $photoUri, numUploaded")
+                      Log.i(TAG, "Finished uploading $photoUri, numUploaded: ${uploadedImageUrls.size}")
                       if(uploadedImageUrls.size == chosenImageUris.size){
                           handleAllImagesUploaded(gameName, uploadedImageUrls)
                       }
                   }
+
           }
       }
 
@@ -228,10 +230,12 @@ package com.example.memoryapp
 
       override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
           super.onActivityResult(requestCode, resultCode, data)
+          //notify the user that image selection did not proceed correctly
           if (requestCode != PICK_PHOTO_CODE || resultCode != Activity.RESULT_OK || data == null ) {
               Log.w(TAG, "Did not get data back from the launched activity, user likely canceled flow")
-            return
+              return
           }
+
           val selectedUri = data?.data
           val clipData = data?.clipData
           if (clipData != null){
@@ -267,6 +271,6 @@ package com.example.memoryapp
           val intent = Intent(Intent.ACTION_PICK)
           intent.type = "image/*"
           intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-          startActivityForResult(Intent.createChooser(intent, "Select images"), PICK_PHOTO_CODE)
+          startActivityForResult(Intent.createChooser(intent, "Select image gallery"), PICK_PHOTO_CODE)
       }
   }
