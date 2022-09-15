@@ -10,10 +10,11 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,7 @@ import com.example.memoryapp.utils.MemoryGame
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -32,10 +34,10 @@ class MainActivity : AppCompatActivity() {
         private const val CREATE_REQUEST_CODE = 7
     }
 
-    private lateinit var clRoot : ConstraintLayout
+    private lateinit var clRoot : CoordinatorLayout
     private lateinit var recyclerViewBoard : RecyclerView
-    private lateinit var textViewNumberMoves : TextView
     private lateinit var textViewNumberPairs : TextView
+    private lateinit var textViewNumberMoves : TextView
 
     private val db = Firebase.firestore
     private var gameName : String? = null
@@ -114,9 +116,24 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.mi_custom -> {
                 showCreationDialog()
-        }
+                return true
+            }
+            R.id.mi_download -> {
+                showDownloadDialog()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showDownloadDialog() {
+        val boardDownloadView = LayoutInflater.from(this).inflate(R.layout.dialog_download_board, null)
+        showAlertDialog("Fetch memory game", boardDownloadView, View.OnClickListener {
+            //grab the text of the target game to download
+            val editTextDownloadGame = boardDownloadView.findViewById<EditText>(R.id.editTextDownloadGame)
+            val gameToDownload = editTextDownloadGame.text.toString().trim()
+            downloadGame(gameToDownload)
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -135,7 +152,7 @@ class MainActivity : AppCompatActivity() {
         db.collection("games").document(customGameName).get().addOnSuccessListener{ document ->
             val userImageList = document.toObject(UserImageList::class.java)
             if (userImageList?.images == null) {
-                Log.e(TAG, "Invalid custom game data from Firestore")
+                Log.e(TAG, "Invalid custom game data from Firebase")
                 Snackbar.make(clRoot, "Sorry, we couldn't find any such game, '$customGameName'", Snackbar.LENGTH_LONG).show()
                 return@addOnSuccessListener
             }
@@ -143,8 +160,14 @@ class MainActivity : AppCompatActivity() {
             //retrieve the size of the board by utilizing the number of cards
             boardSize = BoardSize.getByValue(numCards)
             customGameImages = userImageList.images
-            setupBoard()
             gameName = customGameName
+            //pre fetch images for inmediate presentation
+            for (imageUrl in userImageList.images){
+                Picasso.get().load(imageUrl).fetch()
+            }
+            Snackbar.make(clRoot, "You're now playing '$customGameName'!", Snackbar.LENGTH_LONG).show()
+            setupBoard()
+
         }.addOnFailureListener{ exception ->
             Log.e(TAG, "Excepton when retrieving game", exception)
         }
@@ -152,7 +175,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showCreationDialog() {
         val boardSizeView = LayoutInflater.from(this).inflate(R.layout.dialog_board_size, null)
-        val radioGroupSize = boardSizeView.findViewById<RadioGroup>(R.id.radioGroup)
+        val radioGroupSize = boardSizeView.findViewById<RadioGroup>(R.id.radioGroupSize)
         showAlertDialog("Create your own memory board", boardSizeView, View.OnClickListener {
             val desiredBoardSize = when (radioGroupSize.checkedRadioButtonId){
                 R.id.rbEasy -> BoardSize.EASY
@@ -167,7 +190,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showNewSizeDialog() {
         val boardSizeView = LayoutInflater.from(this).inflate(R.layout.dialog_board_size, null)
-        val radioGroupSize = boardSizeView.findViewById<RadioGroup>(R.id.radioGroup)
+        val radioGroupSize = boardSizeView.findViewById<RadioGroup>(R.id.radioGroupSize)
 
         when (boardSize) {
             BoardSize.EASY -> radioGroupSize.check(R.id.rbEasy)
@@ -199,6 +222,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateGameWithFlip(position : Int) {
 
+        //fall cases
         if(memoryGame.haveWonGame()){
             Snackbar.make(clRoot, "You already won!", Snackbar.LENGTH_LONG).show()
             return
@@ -208,6 +232,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        //Flip the card at position
         if(memoryGame.flipCard(position)) {
             Log.i(TAG, "Found a match! Num pairs found: ${memoryGame.numPairsFound}")
             val color = ArgbEvaluator().evaluate(

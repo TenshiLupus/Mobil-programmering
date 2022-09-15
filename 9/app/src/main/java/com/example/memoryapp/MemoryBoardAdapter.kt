@@ -56,11 +56,12 @@ private val cardClickListener: CardClickListener
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
 
+        //based on the state of the card assign the proper image to display its state and identity
         fun bind(position : Int){
             val memoryCard = cards[position]
             if (memoryCard.isFaceUp){
                 if (memoryCard.imageUrl != null){
-                    Picasso.get().load(memoryCard.imageUrl).into(imageButton)
+                    Picasso.get().load(memoryCard.imageUrl).placeholder(R.drawable.ic_image).into(imageButton)
                 } else {
                     imageButton.setImageResource(memoryCard.identifier)
                 }

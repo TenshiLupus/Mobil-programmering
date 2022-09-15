@@ -39,18 +39,14 @@ import java.io.ByteArrayOutputStream
           private const val PICK_PHOTO_CODE = 3
           private const val READ_EXTERNAL_PHOTOS_CODE = 42
           private const val READ_PHOTOS_PERMISSION = android.Manifest.permission.READ_EXTERNAL_STORAGE
-        private const val MIN_GAME_NAME_LENGTH = 3
-        private const val MAX_GAME_NAME_LENGTH = 14
+          private const val MIN_GAME_NAME_LENGTH = 3
+          private const val MAX_GAME_NAME_LENGTH = 14
       }
-
-
 
       private lateinit var recycleViewImagePicker : RecyclerView
       private lateinit var editTextGameName : EditText
       private lateinit var btnSave : Button
       private lateinit var progressionBarUploading : ProgressBar
-
-
 
       private lateinit var imagePickerAdapter : ImagePickerAdapter
       private lateinit var boardSize : BoardSize
@@ -59,15 +55,14 @@ import java.io.ByteArrayOutputStream
       private val storage = Firebase.storage
       private val db = Firebase.firestore
 
-
       override fun onCreate(savedInstanceState: Bundle?) {
           super.onCreate(savedInstanceState)
           setContentView(R.layout.activity_create)
 
-          recycleViewImagePicker.findViewById<RecyclerView>(R.id.recycleViewImagePicker)
-          editTextGameName.findViewById<EditText>(R.id.editTextGameName)
-          btnSave.findViewById<Button>(R.id.btnSave)
-          progressionBarUploading.findViewById<ProgressBar>(R.id.progressBarUploading)
+          recycleViewImagePicker = findViewById(R.id.recycleViewImagePicker)
+          editTextGameName = findViewById(R.id.editTextGameName)
+          btnSave = findViewById(R.id.btnSave)
+          progressionBarUploading = findViewById(R.id.progressBarUploading)
 
           supportActionBar?.setDisplayHomeAsUpEnabled(true)
           boardSize = intent.getSerializableExtra(EXTRA_BOARD_SIZE) as BoardSize
@@ -81,11 +76,9 @@ import java.io.ByteArrayOutputStream
           editTextGameName.filters = arrayOf(InputFilter.LengthFilter(MAX_GAME_NAME_LENGTH))
           editTextGameName.addTextChangedListener(object : TextWatcher{
               override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                  TODO("Not yet implemented")
               }
 
               override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                  TODO("Not yet implemented")
               }
 
               override fun afterTextChanged(s: Editable?) {
@@ -94,7 +87,8 @@ import java.io.ByteArrayOutputStream
 
           })
           imagePickerAdapter = ImagePickerAdapter(this, chosenImageUris, boardSize, object: ImagePickerAdapter.ImageClickListener{
-              override fun onPlaceholderClicked(){
+              override fun onPlaceholderClicker(){
+                  //Retrieve images from the external filesystem which are going to be selected
                   if(isPermissionGranted(this@CreateActivity, READ_PHOTOS_PERMISSION)){
                       launchIntentForPhotos()
                   } else {

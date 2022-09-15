@@ -18,7 +18,7 @@ class ImagePickerAdapter(
     : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
 
     interface ImageClickListener{
-        fun onPlaceholderClicked()
+        fun onPlaceholderClicker()
     }
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -33,7 +33,7 @@ class ImagePickerAdapter(
         // Intent to select image from gallery
         fun bind() {
             imageViewCustomImage.setOnClickListener{
-                imageClickListener.onPlaceHolderClicked()
+                imageClickListener.onPlaceholderClicker()
             }
         }
     }
