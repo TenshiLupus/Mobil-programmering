@@ -2,6 +2,7 @@ package com.example.memoryapp
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,10 @@ class ImagePickerAdapter(
     private val boardSize: BoardSize,
     private val imageClickListener : ImageClickListener)
     : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
+
+    companion object{
+        private const val TAG = "ImagePickerAdapter"
+    }
 
     interface ImageClickListener{
         fun onPlaceholderClicker()
@@ -39,6 +44,7 @@ class ImagePickerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        Log.i(TAG, "onCreateViewHolder")
         val view = LayoutInflater.from(context).inflate(R.layout.card_image, parent, false)
         val cardWidth = parent.width / boardSize.getWidth()
         val cardHeight = parent.height / boardSize.getHeight()

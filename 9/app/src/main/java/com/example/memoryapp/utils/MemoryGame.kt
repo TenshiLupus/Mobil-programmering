@@ -8,8 +8,7 @@ class MemoryGame(
     private val boardSize: BoardSize,
     private val customImages: List<String>?){
 
-
-    lateinit var cards: List<MemoryCard>
+    val cards: List<MemoryCard>
     var numPairsFound = 0
 
     private var numCardFlips = 0
@@ -23,16 +22,16 @@ class MemoryGame(
             cards = randomizedImages.map { MemoryCard(it) }
         } else{
             val randomizedImages = (customImages + customImages).shuffled()
-            cards = randomizedImages.map {MemoryCard(it.hashCode(), it)}
+            cards = randomizedImages.map { MemoryCard(it.hashCode(), it)}
         }
     }
-
 
     fun flipCard(position : Int) : Boolean {
         numCardFlips++
         val card = cards[position]
         var foundMatch = false
 
+        //for each case on which the card can be in, give the proper response
         if(indexOfSingleSelectedCard == null){
             restoreCards()
             indexOfSingleSelectedCard = position
@@ -50,7 +49,7 @@ class MemoryGame(
         }
         cards[position1].isMatched = true
         cards[position2].isMatched = true
-            numPairsFound++
+        numPairsFound++
         return true
     }
 

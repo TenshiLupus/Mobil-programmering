@@ -74,7 +74,7 @@ private val cardClickListener: CardClickListener
             ViewCompat.setBackgroundTintList(imageButton, colorStateList)
 
             imageButton.setOnClickListener{
-                Log.i(TAG, "Clicked on position ${position}")
+                Log.i(TAG, "Clicked on position $position")
                 cardClickListener.onCardClicked(position)
             }
 
