@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import org.w3c.dom.Text
 import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
@@ -28,16 +29,16 @@ class MainActivity : AppCompatActivity() {
         wdatabase = sqoh.writableDatabase
         rdatabase = sqoh.readableDatabase
 
-        val primeNumberDisplay = findViewById<TextView>(R.id.primeNumber)
-        val button = findViewById<Button>(R.id.button)
+        val primeNumberDisplay : TextView = findViewById(R.id.primeNumber)
+        val button : Button = findViewById(R.id.button)
 
         var lastPrime = retrieveLastPrime()
-        primeNumberDisplay.setText(lastPrime)
+        primeNumberDisplay.setText(lastPrime.toString())
 
         button.setOnClickListener {
             var current = findNextPrime(lastPrime)
-            primeNumberDisplay.setText(current)
-            Toast.makeText(this, current, Toast.LENGTH_SHORT)
+            primeNumberDisplay.setText(current.toString())
+            Toast.makeText(this, current.toString(), Toast.LENGTH_SHORT)
             lastPrime = current
         }
 
@@ -77,12 +78,15 @@ class MainActivity : AppCompatActivity() {
 
     //Retrieve the last store prime in the database
     fun retrieveLastPrime() : Int {
-        var result = rdatabase.rawQuery("SELECT $tablePrime FROM $tableName ORDER BY $tablePrimaryKey DESC", null)
+        var result = rdatabase.rawQuery("SELECT * FROM $tableName ORDER BY $tablePrimaryKey DESC", null)
 
 
         //If there is an available record
         if(result.moveToNext()){
-            return result.getInt(1)
+            var storedNumber = result.getInt(2)
+            Toast.makeText(this, storedNumber.toString(), Toast.LENGTH_SHORT)
+            result.close()
+            return storedNumber
         }
         return 1
     }

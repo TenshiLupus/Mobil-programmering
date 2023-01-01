@@ -19,7 +19,7 @@ class SqlOpenHelper(context : Context, DBName: String, tableName : String, table
         Tname = tableName
         Tprime = tablePrime
         Tdate = tableDate
-        Tpk = tablePrime
+        Tpk = tablePrimaryKey
     }
 
     //By this point the database already exists
@@ -28,7 +28,8 @@ class SqlOpenHelper(context : Context, DBName: String, tableName : String, table
     }
 
     fun createDatabase(db : SQLiteDatabase){
-        var query = "create table " + Tname + "(" + (Tpk) + " integer primary key autoincrement not null, " + Tprime + " integer, " + Tdate + " text" + ");"
+        var query =
+            "CREATE TABLE $Tname($Tpk INTEGER primary key autoincrement not null, $Tprime INTEGER, $Tdate TEXT);"
         db?.execSQL(query)
     }
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
