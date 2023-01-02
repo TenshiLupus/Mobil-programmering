@@ -3,6 +3,7 @@ package com.example.sqlite
 import android.content.ContentValues
 import android.database.sqlite.*
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             var current = findNextPrime(lastPrime)
             primeNumberDisplay.setText(current.toString())
-            Toast.makeText(this, current.toString(), Toast.LENGTH_SHORT)
+
+            Toast.makeText(applicationContext, current.toString(), Toast.LENGTH_SHORT)
             lastPrime = current
         }
 
@@ -50,23 +52,32 @@ class MainActivity : AppCompatActivity() {
 
         while(!found){
             prime++
-            if(isPrime(prime))
+            Log.i("mytag", "Current evaluated number: $prime")
+            if(isPrime(prime)) {
+                Log.i("mytag", "WAS PRIME")
+                addToDatabase(prime)
                 found = true
+                break
+            }
         }
 
         return prime
     }
 
-    fun isPrime(currentNumber : Int): Boolean {
-        for (num in 2..currentNumber){
-            if((2 until num).none{ num % it == 0})
-                addToDatabase(num)
+    private fun isPrime(currentNumber : Int): Boolean {
+
+        for (i in 2..currentNumber / 2) {
+            // condition for nonprime number
+            if (currentNumber % i == 0) {
+                return false
+                break
+            }
         }
-        return false
+        return true
     }
 
     //add the current prime as a new record in the database
-    fun addToDatabase(currentPrime : Int){
+    private fun addToDatabase(currentPrime : Int){
 
         var values = ContentValues()
 
@@ -77,13 +88,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Retrieve the last store prime in the database
-    fun retrieveLastPrime() : Int {
+    private fun retrieveLastPrime() : Int {
         var result = rdatabase.rawQuery("SELECT * FROM $tableName ORDER BY $tablePrimaryKey DESC", null)
 
 
         //If there is an available record
         if(result.moveToNext()){
-            var storedNumber = result.getInt(2)
+            var storedNumber = result.getInt(1)
             Toast.makeText(this, storedNumber.toString(), Toast.LENGTH_SHORT)
             result.close()
             return storedNumber
