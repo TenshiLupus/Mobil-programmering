@@ -3,4 +3,6 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"/>
+    android:background="#84D1D0"
+    android:clickable="true"
+    android:textAlignment="center" />
