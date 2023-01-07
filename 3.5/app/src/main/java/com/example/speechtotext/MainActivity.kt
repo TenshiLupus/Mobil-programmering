@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         if(requestCode == RECOGNIZER_RESULT && resultCode == RESULT_OK){
             var wordList : List<String> = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)!!
             val speechText = this.findViewById<TextView>(R.id.textView)
-            speechText.setText(wordList.get(0).toString())
+            speechText.text = wordList[0]
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
