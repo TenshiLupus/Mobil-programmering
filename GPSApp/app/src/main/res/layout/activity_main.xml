@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <service
+        android:name="MyNavigationService"
+        android:foregroundServiceType="location"
+        >
+    <!-- Any inner elements would go here. -->
+</service>
+
+</LinearLayout>
