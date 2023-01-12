@@ -36,6 +36,7 @@ package com.example.memoryapp
 
   class CreateActivity : AppCompatActivity() {
 
+      //Define static variables
       companion object {
           private const val TAG = "CreateActivity"
           private const val PICK_PHOTO_CODE = 3
@@ -45,6 +46,7 @@ package com.example.memoryapp
           private const val MAX_GAME_NAME_LENGTH = 14
       }
 
+      //Global variables
       private lateinit var recycleViewImagePicker : RecyclerView
       private lateinit var editTextGameName : EditText
       private lateinit var btnSave : Button
@@ -57,6 +59,8 @@ package com.example.memoryapp
       private val storage = Firebase.storage
       private val db = Firebase.firestore
 
+
+      //Setup initial logic
       override fun onCreate(savedInstanceState: Bundle?) {
           super.onCreate(savedInstanceState)
           setContentView(R.layout.activity_create)
@@ -83,11 +87,13 @@ package com.example.memoryapp
               override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
               }
 
+              //After the user has finished typing the name of the board game Enable the save button
               override fun afterTextChanged(s: Editable?) {
                   btnSave.isEnabled = shouldEnableSaveButton()
               }
 
           })
+          //select images to be used as the faces of the memory cards in the board game
           imagePickerAdapter = ImagePickerAdapter(this, chosenImageUris, boardSize, object: ImagePickerAdapter.ImageClickListener{
               override fun onPlaceholderClicker(){
                   //Retrieve images from the external filesystem which are going to be selected
@@ -99,6 +105,8 @@ package com.example.memoryapp
               }
 
           })
+
+          //Assign the adapter and layout manager to the correspondent view
           recycleViewImagePicker.adapter = imagePickerAdapter
           recycleViewImagePicker.setHasFixedSize(true)
           recycleViewImagePicker.layoutManager = GridLayoutManager(this, boardSize.getWidth())
@@ -110,7 +118,7 @@ package com.example.memoryapp
           val customGameName = editTextGameName.text.toString().trim()
           btnSave.isEnabled = false
 
-          //Ensure we are not overwriting existing data
+          //Ensures we are not overwriting existing data
           db.collection("games").document(customGameName).get().addOnSuccessListener{ document ->
               if (document != null && document.data != null ){
                   AlertDialog.Builder(this)
@@ -129,6 +137,7 @@ package com.example.memoryapp
 
       }
 
+      //Handles the upload of the images into the firebase storage
       private fun handleImageUploading(gameName: String){
           progressionBarUploading.visibility = View.VISIBLE
           var didEncounterError = false
@@ -165,6 +174,7 @@ package com.example.memoryapp
           }
       }
 
+      //Helper method to upload multiple images into firebase
       private fun handleAllImagesUploaded(gameName: String, imageUrls: MutableList<String>) {
           //A list of games that everyone have created
           db.collection("games").document( gameName)
@@ -188,6 +198,7 @@ package com.example.memoryapp
               }
       }
 
+      //Converts an image into an array of bytes and returns it
       private fun getImageByteArray(photoUri: Uri): ByteArray {
         val originalBitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val source = ImageDecoder.createSource(contentResolver, photoUri)
@@ -203,6 +214,7 @@ package com.example.memoryapp
           return byteOutputStream.toByteArray()
       }
 
+      //Handles the permission request
       override fun onRequestPermissionsResult(
           requestCode: Int,
           permissions: Array<out String>,
@@ -219,6 +231,7 @@ package com.example.memoryapp
           super.onRequestPermissionsResult(requestCode, permissions, grantResults)
       }
 
+      //"finish" the game whenever the user presses the menu button
       override fun onOptionsItemSelected(item: MenuItem): Boolean {
           if (item.itemId == android.R.id.home){
               finish()
@@ -228,6 +241,8 @@ package com.example.memoryapp
 
       }
 
+      //Handles the result of an utilized intent
+      //makes sure the users selects a given number of images for assginment to cards
       override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
           super.onActivityResult(requestCode, resultCode, data)
           //notify the user that image selection did not proceed correctly
@@ -256,6 +271,7 @@ package com.example.memoryapp
           btnSave.isEnabled = shouldEnableSaveButton()
       }
 
+      //Asserts whether the users has completed writing the name of the game that will be played
       private fun shouldEnableSaveButton(): Boolean {
           if (chosenImageUris.size != numImagesRequired) {
               return false

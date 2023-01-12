@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.memoryapp.models.BoardSize
 import kotlin.math.min
 
+//Adapter that will be used to assign the images to the card containers
 class ImagePickerAdapter(
     private val context : Context,
     private val imageUris: List<Uri>,
     private val boardSize: BoardSize,
-    private val imageClickListener : ImageClickListener)
-    : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
+    private val imageClickListener : ImageClickListener) : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
 
+    // static values
     companion object{
         private const val TAG = "ImagePickerAdapter"
     }
@@ -29,13 +30,13 @@ class ImagePickerAdapter(
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         private val imageViewCustomImage = itemView.findViewById<ImageView>(R.id.imageViewCustomImage)
 
-        //
+        //Bind the viewholder ot the given uri
         fun bind(uri: Uri) {
             imageViewCustomImage.setImageURI(uri)
             imageViewCustomImage.setOnClickListener(null)
         }
 
-        // Intent to select image from gallery
+        //binds no image
         fun bind() {
             imageViewCustomImage.setOnClickListener{
                 imageClickListener.onPlaceholderClicker()
@@ -43,6 +44,7 @@ class ImagePickerAdapter(
         }
     }
 
+    //based on the boards size, select the appropiate size to proportionally fit in the viewport
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         Log.i(TAG, "onCreateViewHolder")
         val view = LayoutInflater.from(context).inflate(R.layout.card_image, parent, false)
@@ -56,6 +58,7 @@ class ImagePickerAdapter(
         return ViewHolder(view)
     }
 
+    //binds image to the correspondent card
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position < imageUris.size){
             holder.bind(imageUris[position])
@@ -64,5 +67,6 @@ class ImagePickerAdapter(
         }
     }
 
+    //gets the number of pairs
     override fun getItemCount() = boardSize.getNumPairs()
 }

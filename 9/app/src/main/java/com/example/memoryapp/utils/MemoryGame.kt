@@ -5,6 +5,8 @@ import com.example.memoryapp.models.MemoryCard
 import com.example.memoryapp.utils.DEFAULT_ICONS
 
 class MemoryGame(
+
+    //Global variables
     private val boardSize: BoardSize,
     private val customImages: List<String>?){
 
@@ -43,6 +45,7 @@ class MemoryGame(
         return foundMatch
     }
 
+    //Asserts wehther the current selected card is the same as the card that it is matched against
     private fun checkForMatch(position1: Int, position2: Int): Boolean {
         if(cards[position1].identifier != cards[position2].identifier) {
             return false
@@ -53,6 +56,7 @@ class MemoryGame(
         return true
     }
 
+    //When the cards are not matched. Flips them face down
     private fun restoreCards() {
         for (card in cards){
             if(!card.isMatched)
@@ -60,14 +64,17 @@ class MemoryGame(
         }
     }
 
+    //If the number of matched pairs is the same as the set limit on the boards size, returs true
     fun haveWonGame() : Boolean{
         return numPairsFound == boardSize.getNumPairs()
     }
 
+    //Checks whehther the given card is face up
     fun isCardFaceUp(position : Int) : Boolean {
         return cards[position].isFaceUp
     }
 
+    //Registers teh number of moves on the game session
     fun getNumMoves() : Int {
         return numCardFlips / 2
     }

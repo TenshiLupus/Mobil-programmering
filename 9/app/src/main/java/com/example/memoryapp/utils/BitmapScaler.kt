@@ -2,6 +2,7 @@ package com.example.memoryapp.utils
 
 import android.graphics.Bitmap
 
+//Helper functions to scale the bitmap to fit the aspect ratio of a memory card container
 object BitmapScaler {
 
     fun scaleToFitWidth(b: Bitmap, width : Int) : Bitmap {

@@ -29,11 +29,14 @@ import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
+
+    //Statics variables
     companion object {
         private const val TAG = "MainActivity"
         private const val CREATE_REQUEST_CODE = 7
     }
 
+    //global varaibles
     private lateinit var clRoot : CoordinatorLayout
     private lateinit var recyclerViewBoard : RecyclerView
     private lateinit var textViewNumberPairs : TextView
@@ -50,11 +53,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Setup UI components
         clRoot = findViewById(R.id.clRoot)
         recyclerViewBoard = findViewById(R.id.RecycleViewBoard)
         textViewNumberMoves = findViewById(R.id.textViewNumberMoves)
         textViewNumberPairs = findViewById(R.id.textViewNumberPairs)
 
+        //initiate the intent to create a new boards size with the given arguments
         val intent = Intent(this, CreateActivity::class.java)
         intent.putExtra(EXTRA_BOARD_SIZE, BoardSize.EASY)
         startActivity(intent)
@@ -62,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         setupBoard()
     }
 
+    //Helper functions to setup the initial logic of the board
     private fun setupBoard(){
         //Incase the game name is null set it equal to the name of the app
         supportActionBar?.title = gameName ?: getString(R.string.app_name)
@@ -80,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        //Defines a progression var to notify the user of how much is left
         textViewNumberPairs.setTextColor(ContextCompat.getColor(this, R.color.color_progress_none))
         memoryGame = MemoryGame(boardSize, customGameImages)
         adapter = MemoryBoardAdapter(this,boardSize, memoryGame.cards, object : MemoryBoardAdapter.CardClickListener{
@@ -88,16 +95,20 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        //assign correspondents components to the board
         recyclerViewBoard.adapter = adapter
         recyclerViewBoard.setHasFixedSize(true)
         recyclerViewBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
 
+
+    //Helper function to redirect user to menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
+    //Handle the userinput and correspondent behavior when an opton has been selected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.mi_refresh -> {
@@ -126,6 +137,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    //Handles the download of the board game for later resume
     private fun showDownloadDialog() {
         val boardDownloadView = LayoutInflater.from(this).inflate(R.layout.dialog_download_board, null)
         showAlertDialog("Fetch memory game", boardDownloadView, View.OnClickListener {
@@ -136,6 +148,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    //handles the creation of a new game activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == CREATE_REQUEST_CODE && resultCode == Activity.RESULT_OK){
             val customGameName = data?.getStringExtra(EXTRA_GAME_NAME)
@@ -148,6 +161,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    //downloads the stored game state from firebase and assigns it to the global vairables that will be used for the setup of the board
     private fun downloadGame(customGameName : String){
         db.collection("games").document(customGameName).get().addOnSuccessListener{ document ->
             val userImageList = document.toObject(UserImageList::class.java)
@@ -173,6 +187,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Present the user with options over how the game should play
     private fun showCreationDialog() {
         val boardSizeView = LayoutInflater.from(this).inflate(R.layout.dialog_board_size, null)
         val radioGroupSize = boardSizeView.findViewById<RadioGroup>(R.id.radioGroupSize)
@@ -188,6 +203,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+
+    //Query the user how big the board size should be
     private fun showNewSizeDialog() {
         val boardSizeView = LayoutInflater.from(this).inflate(R.layout.dialog_board_size, null)
         val radioGroupSize = boardSizeView.findViewById<RadioGroup>(R.id.radioGroupSize)
@@ -210,6 +227,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    //
     private fun showAlertDialog(title : String, view : View?, positiveClickListener : View.OnClickListener) {
         AlertDialog.Builder(this)
             .setTitle(title)
@@ -220,6 +238,7 @@ class MainActivity : AppCompatActivity() {
             }.show()
     }
 
+    //Handles the state of the game for when a card has been flipped
     private fun updateGameWithFlip(position : Int) {
 
         //fall cases

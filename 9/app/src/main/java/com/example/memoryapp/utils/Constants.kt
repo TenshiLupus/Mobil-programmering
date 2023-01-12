@@ -2,6 +2,7 @@ package com.example.memoryapp.utils
 
 import com.example.memoryapp.R
 
+//Placeholder drawable images utilized to differentiate the memory cards
 const val EXTRA_BOARD_SIZE = "EXTRA_BOARD_SIZE"
 const val EXTRA_GAME_NAME = "EXTRA_GAME_NAME"
 val DEFAULT_ICONS = listOf(
